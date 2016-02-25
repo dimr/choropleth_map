@@ -1,0 +1,12 @@
+library(RColorBrewer)
+library(maptools)
+library(classInt)
+w<-readShapePoly("~/workspace/RData/w-border/TM_WORLD_BORDERS-0.3.shp")
+soudis<-read.csv("~/workspace/RData/data.csv",header=T)
+m<-match(w$NAME,soudis$country)
+w$index<-soudis$index[m]
+brks<-classIntervals(w$index,n=5)
+brks<-brks$brks
+brks[6]=brks[6]+1
+palette<-brewer.pal(5,"Blues")
+plot(w,col=palette[findInterval(w$index,brks)],lwd=.4)
